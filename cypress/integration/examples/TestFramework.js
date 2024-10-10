@@ -1,6 +1,7 @@
 /// <reference types="Cypress" />
 
 import HomePage from "../pageObjects/HomePage";
+import ProductPage from "../pageObjects/ProductPage";
 
 describe("My Second Test", () => {
   before(function () {
@@ -11,20 +12,18 @@ describe("My Second Test", () => {
 
   it("My FirstTest case", function () {
     const homePage = new HomePage();
+    const productPage = new ProductPage();
     cy.visit("https://rahulshettyacademy.com/angularpractice/");
     homePage.getEditBox().type(this.data.name);
     homePage.getGender().select(this.data.gender);
     homePage.getTwoWayDataBinding().should("have.value", this.data.name);
-    cy.get('input[name="name"]:nth-child(2)').should(
-      "have.attr",
-      "minlength",
-      "2"
-    );
-    cy.get("#inlineRadio3").should("be.disabled");
+    homePage.getEditBox().should("have.attr", "minlength", "2");
+    homePage.getEntrepreneaur().should("be.disabled");
     //cy.pause()
-    cy.get(":nth-child(2) > .nav-link").click();
+    homePage.getShopTab().click();
     this.data.productName.forEach(function (element) {
       cy.selectProduct(element);
     });
+    productPage.getCheckOutButton().click();
   });
 });
